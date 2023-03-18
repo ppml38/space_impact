@@ -1,9 +1,9 @@
 export class bullet{
     constructor(game){
-        this.x = 70;
-        this.y = game.aircraft.y + 10;
         this.width = 30;
         this.height = 30;
+        this.x = game.aircraft.x + game.aircraft.width;
+        this.y = game.aircraft.y + (game.aircraft.height-this.height)/2;
         this.speed = 5;
         this.image = null;
     }
@@ -16,7 +16,7 @@ export class bullet{
                 </svg>`;
     }
     render(game){
-        if(this.x-this.width < game.canvas_width){
+        if(this.x < game.canvas_width){
             this.x = this.x + this.speed;
         }
         else{

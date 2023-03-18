@@ -1,5 +1,6 @@
 import {aircraft} from "./aircraft.js";
 import {bullet} from "./bullet.js";
+import {obstacle} from "./obstacle.js";
 export class game{
     constructor(){
         // game view
@@ -16,8 +17,11 @@ export class game{
         this.down_key_pressed = false;
         this.space_key_pressed = false;
         this.canvas_refresh_rate = 10; // one frame for 10ms i.e 100 frames/second
+        this.obstacle_rate = 2000; // new obstacle will be added every 2 seconds.
         this.aircraft = new aircraft();
         this.bullets=[];
+        this.obstacles=[];
+        this.previous_second = 0;
 
         // adding event listeners for user input
         document.onkeydown = (event)=>{
@@ -62,17 +66,30 @@ export class game{
         // set spacecraft position
         this.aircraft.render(this);
 
-        // add a new enemy missile
-        // set current position for all bullets
+        // add a new obstacle like meteor/missile
+        /*let current_second = new Date().getSeconds();
+        if(Math.abs(current_second-this.previous_second)>2 && Math.random() < 0.5){
+            this.obstacles.push(new obstacle(this));
+            this.previous_second = current_second;
+        }*/
+
+        // set current position for all bullets and obstacles
+        this.obstacles = this.obstacles.filter((obstacle)=>{
+            return obstacle.render(this);
+        });
         this.bullets = this.bullets.filter((bullet)=>{
             return bullet.render(this);
         });
 
         // if game over. exit.
     }
+    addObstacle(){
+        this.obstacles.push(new obstacle(this));
+    }
     render(){
         // starting the game
         setInterval(()=>{this.run();}, this.canvas_refresh_rate);
+        setInterval(()=>{this.addObstacle();}, this.obstacle_rate);
         return this.canvas;
     }
 }

@@ -5,16 +5,6 @@ export class aircraft{
         this.height = 50;
         this.width = 50;
         this.speed = 2;
-/*
-        // get svg data
-        var xml = new XMLSerializer().serializeToString(this.getAircraftSVG());
-
-        // make it base64
-        var svg64 = btoa(xml);
-        var b64Start = 'data:image/svg+xml;base64,';
-
-        // prepend a "header"
-        var image64 = b64Start + svg64;*/
         this.image = null;
     }
     getAircraftSVG(){
@@ -39,7 +29,6 @@ export class aircraft{
             }
             this.image.src = `data:image/svg+xml;utf8,${encodeURIComponent(this.getAircraftSVG())}`;
         }
-        //return new Path2D(`M${this.x} ${this.y} h ${this.width} v ${this.height} h -${this.width} Z`);
         else{
             game.ctx.drawImage(this.image, this.x, this.y);
         }
