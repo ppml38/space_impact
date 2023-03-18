@@ -1,4 +1,5 @@
 import {aircraft} from "./aircraft.js";
+import {bullet} from "./bullet.js";
 export class game{
     constructor(){
         // game view
@@ -16,8 +17,7 @@ export class game{
         this.space_key_pressed = false;
         this.canvas_refresh_rate = 10; // one frame for 10ms i.e 100 frames/second
         this.aircraft = new aircraft();
-        this.bullets=[
-        ];
+        this.bullets=[];
 
         // adding event listeners for user input
         document.onkeydown = (event)=>{
@@ -44,6 +44,7 @@ export class game{
 
     }
     shoot(){
+        this.bullets.push(new bullet(this));
     }
     getBackground(){
 
@@ -59,10 +60,14 @@ export class game{
         //this.ctx.fill(this.getBackground());
 
         // set spacecraft position
-        this.ctx.fill(this.aircraft.render(this));
+        this.aircraft.render(this);
 
-        // add a new bullet
+        // add a new enemy missile
         // set current position for all bullets
+        this.bullets = this.bullets.filter((bullet)=>{
+            return bullet.render(this);
+        });
+
         // if game over. exit.
     }
     render(){
