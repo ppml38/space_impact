@@ -1,6 +1,8 @@
 # space_impact
 Space game where you travel in a space-ship and destroy meteors with missiles to save humanity.
 
+# [Click here to Play the game](ppml38.github.io/space_impact/)
+
 ## Story line
 Scientists have warned that a cluster of meteors is on earth's orbiting path and they are going to hit earth soon.    
 
