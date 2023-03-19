@@ -17,9 +17,9 @@ export class game{
         this.canvas.height = this.canvas_height;
         this.canvas.width = this.canvas_width;
         this.ctx = this.canvas.getContext("2d");
-        //this.launch_sound = new Audio("../audio/launch.wav");
-        //this.launch_sound.preload = 'auto';
-        //this.launch_sound.load();
+        this.launch_sound = new Audio("../audio/launch.wav");
+        this.launch_sound.preload = 'auto';
+        this.launch_sound.load();
 
 
         // game states and constants
@@ -144,7 +144,7 @@ export class game{
             });
             this.bullets.push(new_bullet);
         }
-        //this.playLaunchSound();
+        this.playLaunchSound();
         //console.log(this.crossoverMap);
     }
     addObstacle(){
