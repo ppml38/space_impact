@@ -105,6 +105,7 @@ export class obstacle{
                 this.image.onload=()=>{
                         game.ctx.drawImage(this.image, this.x, this.y);
                     }
+                game.explosion_sound.play();
                 this.image.src = `data:image/svg+xml;utf8,${encodeURIComponent(this.getExplosion())}`;
                 this.explosion_timeout-=1;
             }

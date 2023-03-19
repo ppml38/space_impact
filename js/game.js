@@ -1,6 +1,7 @@
 import {aircraft} from "./aircraft.js";
 import {bullet} from "./bullet.js";
 import {obstacle} from "./obstacle.js";
+import {audio} from "./audio.js";
 class defaultdict {
   constructor(defaultVal) {
     return new Proxy({}, {
@@ -17,10 +18,12 @@ export class game{
         this.canvas.height = this.canvas_height;
         this.canvas.width = this.canvas_width;
         this.ctx = this.canvas.getContext("2d");
+        /*
         this.launch_sound = new Audio("audio/launch.wav");
         this.launch_sound.preload = 'auto';
-        this.launch_sound.load();
-
+        this.launch_sound.load();*/
+        this.bullet_launch_sound = new audio('audio/launch.wav');
+        this.explosion_sound = new audio('audio/explosion.mp3');
 
         // game states and constants
         this.missiles_left = 120;
@@ -64,11 +67,11 @@ export class game{
                 this.down_key_pressed = false;
             }
         }
-
     }
     playLaunchSound() {
-      var click=this.launch_sound.cloneNode();
-      click.play();
+      /*var click=this.launch_sound.cloneNode();
+      click.play();*/
+      this.bullet_launch_sound.play();
     }
     getBackground(){
         this.ctx.font = "30px serif";
