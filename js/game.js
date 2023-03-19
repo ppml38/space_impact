@@ -17,13 +17,13 @@ export class game{
         this.canvas.height = this.canvas_height;
         this.canvas.width = this.canvas_width;
         this.ctx = this.canvas.getContext("2d");
-        this.launch_sound = new Audio("./launch.wav");
-        this.launch_sound.preload = 'auto';
-        this.launch_sound.load();
+        //this.launch_sound = new Audio("../audio/launch.wav");
+        //this.launch_sound.preload = 'auto';
+        //this.launch_sound.load();
 
 
         // game states and constants
-        this.missiles_left = 110;
+        this.missiles_left = 120;
         this.obstacles_left = 100;
         this.obstacle_miss = 5;
         this.aircraft_life=3;

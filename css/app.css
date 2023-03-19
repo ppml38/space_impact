@@ -1,7 +1,6 @@
 body{
     margin: 0rem;
-    //background-color: #dae0e6;
-    background-image: url(./space.gif);
+    background-image: url(../img/space.gif);
     font-family: "Segoe UI", Tahoma, Helvetica, Sans-Serif, serif;
     font-style: normal;
     font-size: 14px;
