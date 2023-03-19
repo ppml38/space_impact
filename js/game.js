@@ -12,8 +12,8 @@ export class game{
     constructor(){
         // game view
         this.canvas = document.createElement("canvas");
-        this.canvas_height = window.screen.height-10; //600;
-        this.canvas_width = window.screen.width-10; //1200;
+        this.canvas_height = window.innerHeight-10; //600;
+        this.canvas_width = window.innerWidth-10; //1200;
         this.canvas.height = this.canvas_height;
         this.canvas.width = this.canvas_width;
         this.ctx = this.canvas.getContext("2d");
