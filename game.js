@@ -12,8 +12,8 @@ export class game{
     constructor(){
         // game view
         this.canvas = document.createElement("canvas");
-        this.canvas_height = 600;
-        this.canvas_width = 1200;
+        this.canvas_height = window.screen.height-10; //600;
+        this.canvas_width = window.screen.width-10; //1200;
         this.canvas.height = this.canvas_height;
         this.canvas.width = this.canvas_width;
         this.ctx = this.canvas.getContext("2d");
@@ -23,6 +23,10 @@ export class game{
 
 
         // game states and constants
+        this.missiles_left = 110;
+        this.obstacles_left = 100;
+        this.obstacle_miss = 5;
+        this.aircraft_life=3;
         this.up_key_pressed = false;
         this.down_key_pressed = false;
         this.space_key_pressed = false;
@@ -66,15 +70,25 @@ export class game{
       var click=this.launch_sound.cloneNode();
       click.play();
     }
+    getBackground(){
+        this.ctx.font = "30px serif";
+        this.ctx.fillStyle = "white";
+        this.ctx.fillText(`Missile: ${this.missiles_left}`, 50, 50);
+        this.ctx.fillText(`EarthLife: ${this.obstacle_miss}`, Math.floor(this.canvas_width/2), 50);
+        this.ctx.fillText(`SpaceshipLife: ${this.aircraft_life}`, this.canvas_width-200, 50);
+    }
+    clearCanvas(){
+        this.ctx.clearRect(0,0,this.canvas_width, this.canvas_height);
+    }
     run(){
         /*
             Method that gets executed once per canvas refresh rate and updates canvas with latest view
         */
         // clear canvas for redrawing
-        this.ctx.clearRect(0,0,this.canvas_width, this.canvas_height);
+        this.clearCanvas();
 
         // set background
-        //this.ctx.fill(this.getBackground());
+        this.getBackground();
 
         // set spacecraft position
         this.aircraft.render(this);
@@ -88,33 +102,67 @@ export class game{
         });
 
         // if game over. exit.
+        if(this.gameover()===true){
+            clearInterval(this.runid);
+            clearInterval(this.obsid);
+            this.showResult();
+        }
+    }
+    showResult(){
+        this.clearCanvas();
+        this.getBackground();
+        this.ctx.font = "50px serif";
+        this.ctx.fillStyle = "white";
+        this.ctx.fillText(`Game over. ${this.result}`, Math.floor(this.canvas_width/3), Math.floor(this.canvas_height/2));
+    }
+    gameover(){
+        let message=null;
+        if(this.obstacle_miss<=0 || this.aircraft_life<=0){
+            this.result="You lost";
+        }
+        else if(this.missiles_left>=0 && this.obstacles_left<=0){
+            this.result="YOU WON !!";
+        }
+        else if(this.missiles_left<=0){
+            this.result="You lost";
+        }
+        else{
+            return false;
+        }
+        return true;
     }
     shoot(){
-        let new_bullet = new bullet(this);
-        this.obstacles.map((obs)=>{
-            if(new_bullet.onThePath(obs)===true){
-                this.crossoverMap[new_bullet.y].push(obs);
-                //console.log("added to map");
-                //console.log(this.crossoverMap[new_bullet.y])
-            }
-        });
-        this.bullets.push(new_bullet);
+        if(this.missiles_left>0){
+            this.missiles_left-=1;
+            let new_bullet = new bullet(this);
+            this.obstacles.map((obs)=>{
+                if(new_bullet.onThePath(obs)===true){
+                    this.crossoverMap[new_bullet.y].push(obs);
+                    //console.log("added to map");
+                    //console.log(this.crossoverMap[new_bullet.y])
+                }
+            });
+            this.bullets.push(new_bullet);
+        }
         //this.playLaunchSound();
         //console.log(this.crossoverMap);
     }
     addObstacle(){
-        let new_obs = new obstacle(this);
-        this.bullets.map((bullet)=>{
-            if(bullet.onThePath(new_obs)){
-                this.crossoverMap[bullet.y].push(new_obs);
-            }
-        });
-        this.obstacles.push(new_obs);
+        if(this.obstacles_left>0){
+            this.obstacles_left-=1;
+            let new_obs = new obstacle(this);
+            this.bullets.map((bullet)=>{
+                if(bullet.onThePath(new_obs)){
+                    this.crossoverMap[bullet.y].push(new_obs);
+                }
+            });
+            this.obstacles.push(new_obs);
+        }
     }
     render(){
         // starting the game
-        setInterval(()=>{this.run();}, this.canvas_refresh_rate);
-        setInterval(()=>{this.addObstacle();}, this.obstacle_rate);
+        this.runid = setInterval(()=>{this.run();}, this.canvas_refresh_rate);
+        this.obsid = setInterval(()=>{this.addObstacle();}, this.obstacle_rate);
         return this.canvas;
     }
 }

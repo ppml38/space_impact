@@ -4,7 +4,7 @@ export class aircraft{
         this.y = 300;
         this.height = 100;
         this.width = 100;
-        this.speed = 5;
+        this.speed = 10;
         this.image = null;
     }
     getAircraftSVG(){
