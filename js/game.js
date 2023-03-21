@@ -23,7 +23,7 @@ export class game{
         this.launch_sound.preload = 'auto';
         this.launch_sound.load();*/
         this.bullet_launch_sound = new audio('audio/launch.wav');
-        this.explosion_sound = new audio('audio/explosion.mp3');
+        this.explosion_sound = new audio('audio/explosion.wav');
 
         // game states and constants
         this.missiles_left = 120;
