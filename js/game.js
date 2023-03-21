@@ -106,10 +106,11 @@ export class game{
 
         // if game over. exit.
         if(this.gameover()===true){
-            clearInterval(this.runid);
+            //clearInterval(this.runid);
             clearInterval(this.obsid);
             this.showResult();
         }
+        requestAnimationFrame(()=>{this.run();});
     }
     showResult(){
         this.clearCanvas();
@@ -164,7 +165,8 @@ export class game{
     }
     render(){
         // starting the game
-        this.runid = setInterval(()=>{this.run();}, this.canvas_refresh_rate);
+        //this.runid = setInterval(()=>{this.run();}, this.canvas_refresh_rate);
+        this.run();
         this.obsid = setInterval(()=>{this.addObstacle();}, this.obstacle_rate);
         return this.canvas;
     }
