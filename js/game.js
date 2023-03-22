@@ -24,6 +24,8 @@ export class game{
         this.launch_sound.load();*/
         this.bullet_launch_sound = new audio('audio/launch.wav');
         this.explosion_sound = new audio('audio/explosion.wav');
+        this.explosion_image = new Image();
+        this.explosion_image.src = 'img/explosion.png';
 
         // game states and constants
         this.missiles_left = 120;

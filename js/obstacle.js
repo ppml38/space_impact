@@ -75,7 +75,7 @@ export class obstacle{
     drawExplosion(game){
         let y = this.explosion_timeout<5 ? 0 : 192;
         let x = y===0 ? this.explosion_timeout*192 : (this.explosion_timeout-5)*192;
-        game.ctx.drawImage( this.image, x,y,192,192, this.x, this.y, 100, 100);
+        game.ctx.drawImage(this.image, x,y,192,192, this.x, this.y, 100, 100);
         this.explosion_timeout+=1;
     }
     render(game){
@@ -107,12 +107,12 @@ export class obstacle{
         }
         else{
             if(this.explosionState!=='EXPLODING'){
-                this.image = new Image();
-                this.image.onload=()=>{
+                this.image = game.explosion_image;
+                /*this.image.onload=()=>{
                         this.drawExplosion(game);
-                    }
+                    }*/
                 game.explosion_sound.play();
-                this.image.src = "img/explosion.png";//`data:image/svg+xml;utf8,${encodeURIComponent(this.getExplosion())}`;
+                //this.image.src = "img/explosion.png";//`data:image/svg+xml;utf8,${encodeURIComponent(this.getExplosion())}`;
                 this.explosionState='EXPLODING';
             }
             else{
