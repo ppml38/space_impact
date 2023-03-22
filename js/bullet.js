@@ -52,14 +52,23 @@ export class bullet{
         }
         if(this.isactive===true){
             if(game.crossoverMap[this.y]){
-                for(let i=0;i<game.crossoverMap[this.y].length;i++){
+                game.crossoverMap[this.y] = game.crossoverMap[this.y].filter((obstacle)=>{
+                    if(obstacle.isactive===false) return false;
+                    if(this.isCollision(obstacle)===true){
+                        obstacle.isactive = false;
+                        this.isactive=false;
+                        //console.log("HIT DETECTED")
+                    };
+                    return true;
+                });
+                /*for(let i=0;i<game.crossoverMap[this.y].length;i++){
                     if(game.crossoverMap[this.y][i].isactive===true &&
                         this.isCollision(game.crossoverMap[this.y][i])===true){
                         game.crossoverMap[this.y][i].isactive = false;
                         //console.log("HIT DETECTED")
                         return true;
                     }
-                }
+                }*/
                 //console.log("no hit");
                 this.hitCheckTimeout=this.defaultHitCheckTimeout;
                 return false;
@@ -76,7 +85,8 @@ export class bullet{
         }
     }
     render(game){
-        if(this.checkHit(game)===false){
+        this.checkHit(game);
+        if(this.isactive===true){
             if(this.x < game.canvas_width){
                 this.x = this.x + this.speed;
             }

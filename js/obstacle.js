@@ -3,10 +3,10 @@ export class obstacle{
         this.width = 70;
         this.height = 50;
         this.x = game.canvas_width - this.width;
-        this.y = Math.floor(Math.random() * ((game.canvas_height-this.height) - 1 + 1)) + 1; //from https://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
-        this.speed = Math.floor(Math.random() * (6- 3 + 1)) + 3; // random between 8 and 10
+        this.y = Math.floor(Math.random() * (game.canvas_height-this.height)) + 1; //from https://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
+        this.speed = Math.floor(Math.random() * 4) + 3; // random between 8 and 10
         this.image = null;
-        this.explosion_timeout = 7;
+        this.explosion_timeout = 0;
         this.isactive = true;
         this.defaultHitCheckTimeout = 6;
         this.hitCheckTimeout = 6;
@@ -72,6 +72,12 @@ export class obstacle{
             return true;
         }
     }
+    drawExplosion(game){
+        let y = this.explosion_timeout<5 ? 0 : 192;
+        let x = y===0 ? this.explosion_timeout*192 : (this.explosion_timeout-5)*192;
+        game.ctx.drawImage( this.image, x,y,192,192, this.x, this.y, 100, 100);
+        this.explosion_timeout+=1;
+    }
     render(game){
         if(this.x+this.width > 0){
             this.x = this.x - this.speed;
@@ -100,19 +106,18 @@ export class obstacle{
             }
         }
         else{
-            if(this.explosion_timeout===7){
+            if(this.explosionState!=='EXPLODING'){
                 this.image = new Image();
                 this.image.onload=()=>{
-                        game.ctx.drawImage(this.image, this.x, this.y);
+                        this.drawExplosion(game);
                     }
                 game.explosion_sound.play();
-                this.image.src = `data:image/svg+xml;utf8,${encodeURIComponent(this.getExplosion())}`;
-                this.explosion_timeout-=1;
+                this.image.src = "img/explosion.png";//`data:image/svg+xml;utf8,${encodeURIComponent(this.getExplosion())}`;
+                this.explosionState='EXPLODING';
             }
             else{
-                this.explosion_timeout-=1;
-                game.ctx.drawImage(this.image, this.x, this.y);
-                if(this.explosion_timeout==0){return false;}
+                this.drawExplosion(game);
+                if(this.explosion_timeout==7){return false;}
                 return true;
             }
         }

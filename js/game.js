@@ -83,10 +83,17 @@ export class game{
     clearCanvas(){
         this.ctx.clearRect(0,0,this.canvas_width, this.canvas_height);
     }
-    run(){
+    run(timestamp){
         /*
             Method that gets executed once per canvas refresh rate and updates canvas with latest view
         */
+        if(!this.currentTimeStamp) this.currentTimeStamp = timestamp;
+        let timeDelta = Math.floor(timestamp - this.currentTimeStamp);
+        if(Math.floor(timeDelta / this.obstacle_rate) > 0) // after every second
+        {
+         this.addObstacle();
+         this.currentTimeStamp = timestamp;
+        }
         // clear canvas for redrawing
         this.clearCanvas();
 
@@ -107,10 +114,12 @@ export class game{
         // if game over. exit.
         if(this.gameover()===true){
             //clearInterval(this.runid);
-            clearInterval(this.obsid);
+            //clearInterval(this.obsid);
             this.showResult();
         }
-        requestAnimationFrame(()=>{this.run();});
+        else{
+            requestAnimationFrame((timestamp)=>{this.run(timestamp);});
+        }
     }
     showResult(){
         this.clearCanvas();
@@ -167,7 +176,7 @@ export class game{
         // starting the game
         //this.runid = setInterval(()=>{this.run();}, this.canvas_refresh_rate);
         this.run();
-        this.obsid = setInterval(()=>{this.addObstacle();}, this.obstacle_rate);
+        //this.obsid = setInterval(()=>{this.addObstacle();}, this.obstacle_rate);
         return this.canvas;
     }
 }
