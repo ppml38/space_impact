@@ -59,6 +59,11 @@ export class game{
                     this.space_key_pressed = false;
                 }
             }
+            else if(e.keyCode=='82'){
+                if(this.gameover()===true){
+                    this.restart();
+                }
+            }
         }
         document.onkeyup = (event)=>{
             let e=event||window.event;
@@ -128,7 +133,8 @@ export class game{
         this.getBackground();
         this.ctx.font = "50px serif";
         this.ctx.fillStyle = "white";
-        this.ctx.fillText(`Game over. ${this.result}`, Math.floor(this.canvas_width/3), Math.floor(this.canvas_height/2));
+        this.ctx.fillText(`Game over. ${this.result}.`, Math.floor(this.canvas_width/3), Math.floor(this.canvas_height/2));
+        this.ctx.fillText(`Press 'r' to restart.`, Math.floor(this.canvas_width/2.8), Math.floor(this.canvas_height/1.5));
     }
     gameover(){
         let message=null;
@@ -174,11 +180,20 @@ export class game{
             this.obstacles.push(new_obs);
         }
     }
-    render(){
-        // starting the game
-        //this.runid = setInterval(()=>{this.run();}, this.canvas_refresh_rate);
+
+    restart(){
+        this.missiles_left = 120;
+        this.obstacles_left = 100;
+        this.obstacle_miss = 5;
+        this.aircraft_life=3;
+
+        this.bullets=[];
+        this.obstacles=[];
+
         this.run();
-        //this.obsid = setInterval(()=>{this.addObstacle();}, this.obstacle_rate);
+    }
+    render(){
+        this.run();
         return this.canvas;
     }
 }

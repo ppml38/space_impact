@@ -17,5 +17,11 @@ You, the brave man/woman, onboard the spaceship and going to complete this missi
 * Maximum number of meteor-hits earth can withstand: 5
 
 Destroy all the meteors to win.
+
+## Controls
+Up arrow - Move spaceship to top     
+Down arrow - Move spaceship to bottom      
+Space - Launch missile     
+
 ## Demo
 ![Demo](img/screenshot.png)
